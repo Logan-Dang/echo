@@ -3,13 +3,10 @@ package echo;
 import java.net.Socket;
 
 public class CacheHandler extends ProxyHandler {
-  private static Cache cache;
+  private static final Cache cache = new Cache();
 
   public CacheHandler(Socket s) {
     super(s);
-    if (cache == null) {
-      cache = new Cache();
-    }
   }
 
   @Override
