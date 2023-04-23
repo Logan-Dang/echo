@@ -1,6 +1,7 @@
 package echo;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -23,7 +24,8 @@ public class Server {
     } // catch
   }
 
-  public void listen() {
+  public void listen() throws InstantiationException, IllegalAccessException, IllegalArgumentException,
+      InvocationTargetException, NoSuchMethodException, SecurityException {
     while (true) {
       try {
         Socket s = mySocket.accept();
@@ -36,11 +38,13 @@ public class Server {
     } // while
   }
 
-  public RequestHandler makeHandler(Socket s) {
-    return new RequestHandler(s);
+  public RequestHandler makeHandler(Socket s) throws InstantiationException, IllegalAccessException,
+      IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    return (RequestHandler) handlerType.getDeclaredConstructor(s.getClass()).newInstance(s);
+
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     int port = 5555;
     String service = "echo.RequestHandler";
     if (1 <= args.length) {
