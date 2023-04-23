@@ -30,7 +30,7 @@ public class Server {
       try {
         Socket s = mySocket.accept();
         RequestHandler handler = this.makeHandler(s);
-        System.out.println("Accepted connection on port " + s.getPort() + "using handler " + handler.getClass());
+        System.out.println("Accepted connection on port " + s.getPort() + " using handler " + handler.getClass());
         Thread t = new Thread(handler);
         t.start();
       } catch (IOException e) {

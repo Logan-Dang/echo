@@ -14,9 +14,12 @@ public class ProxyServer extends Server {
     this.peerPort = peerPort;
   }
 
-  public RequestHandler makeHandler(Socket s) {
-    ProxyHandler handler = new ProxyHandler(s);
-    handler.initPeer(peerHost, peerPort);
+  public RequestHandler makeHandler(Socket s) throws InstantiationException, IllegalAccessException,
+      IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    RequestHandler handler = super.makeHandler(s);
+    if (handler instanceof ProxyHandler) {
+      ((ProxyHandler) handler).initPeer(peerHost, peerPort);
+    }
     return handler;
   }
 

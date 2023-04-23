@@ -10,10 +10,6 @@ public class ProxyHandler extends RequestHandler {
     super(s);
   }
 
-  public ProxyHandler() {
-    super();
-  }
-
   public void initPeer(String host, int port) {
     peer = new Correspondent();
     peer.requestConnection(host, port);
