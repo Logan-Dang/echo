@@ -29,13 +29,12 @@ public class RequestHandler extends Correspondent implements Runnable {
   public void run() {
     while (active) {
       try {
-        // receive request
+        String request = this.receive();
         if (request.equals("quit")) {
           shutDown();
           break;
         }
-        // send response
-        // sleep
+        send(response(request));
       } catch (Exception e) {
         send(e.getMessage() + "... ending session");
         break;

@@ -1,8 +1,8 @@
 package echo;
 
-import java.util.*;
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
 
@@ -16,6 +16,7 @@ public class Server {
       myPort = port;
       mySocket = new ServerSocket(myPort);
       this.handlerType = (Class.forName(handlerType));
+      System.out.println("Listening on port: " + port);
     } catch (Exception e) {
       System.err.println(e.getMessage());
       System.exit(1);
@@ -24,17 +25,19 @@ public class Server {
 
   public void listen() {
     while (true) {
-      // accept a connection
-      // make handler
-      // start handler in its own thread
+      try {
+        Socket s = mySocket.accept();
+        RequestHandler handler = this.makeHandler(s);
+        Thread t = new Thread(handler);
+        t.start();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     } // while
   }
 
   public RequestHandler makeHandler(Socket s) {
-    // handler = a new instance of handlerType
-    // use: try { handlerType.getDeclaredConstructor().newInstance() } catch ...
-    // set handler's socket to s
-    // return handler
+    return new RequestHandler(s);
   }
 
   public static void main(String[] args) {
